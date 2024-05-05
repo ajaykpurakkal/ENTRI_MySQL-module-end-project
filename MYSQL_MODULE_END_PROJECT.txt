@@ -1,0 +1,180 @@
+create database library;
+
+use library;
+
+create table Branch(
+Branch_no int PRIMARY KEY,
+Manager_Id int,
+Branch_address varchar(50),
+Contact_no bigint
+);
+INSERT into BRANCH VALUES
+(1, 101, '123 Main St, Anytown USA', 1234567890),
+(2, 102, '456 Oak Rd, Somewhere City', 0987654321),
+(3, 103, '789 Elm St, Elsewhere Town', 5555555555),
+(4, 104, '321 Pine Ave, Somewhere Else', 9999999999),
+(5, 105, '654 Maple Blvd, Anywhere City', 8888888888),
+(6, 106, '987 Oak St, Someplace Town', 7777777777),
+(7, 107, '159 Elm Rd, Anywhere Else', 6666666666),
+(8, 108, '753 Pine St, Somewhere Town', 4444444444),
+(9, 109, '951 Maple Ave, Anyplace City', 3333333333),
+(10, 110, '357 Oak Blvd, Elsewhere City', 2222222222);
+
+SELECT * FROM BRANCH;
+
+create table Employee(
+Emp_Id int PRIMARY KEY,
+Emp_name varchar(30),
+Position varchar(30),
+Salary int,
+Branch_no int,
+foreign key(Branch_no) references Branch(Branch_no) on delete cascade);
+
+INSERT INTO EMPLOYEE VALUES
+(1001, 'John Doe', 'Manager', 60000, 1),
+(1002, 'Jane Smith', 'Librarian', 45000, 2),
+(1003, 'Michael Johnson', 'Clerk', 35000, 3),
+(1004, 'Emily Davis', 'Librarian', 48000, 4),
+(1005, 'David Wilson', 'Manager', 65000, 5),
+(1006, 'Sarah Lee', 'Clerk', 32000, 6),
+(1007, 'Robert Thompson', 'Librarian', 50000, 7),
+(1008, 'Olivia Anderson', 'Clerk', 38000, 8),
+(1009, 'William Martinez', 'Manager', 70000, 9),
+(1010, 'Sophia Hernandez', 'Librarian', 52000, 10);
+
+SELECT * FROM EMPLOYEE;
+
+create table customer(
+customer_Id int primary key,
+customer_name varchar(30),
+customer_address varchar(30),
+Reg_date date);
+
+INSERT INTO CUSTOMER VALUES 
+(101, 'Alice Johnson', '123 Main St, Anytown', '2022-01-01'),
+(102, 'Bob Smith', '456 Oak Rd, Somewhere City', '2022-02-15'),
+(103, 'Charlie Davis', '789 Elm St, Elsewhere Town', '2022-03-30'),
+(104, 'Diana Wilson', '321 Pine Ave, Somewhere Else', '2022-04-20'),
+(105, 'Ethan Lee', '654 Maple Blvd, Anywhere City', '2022-05-10'),
+(106, 'Olivia Thompson', '987 Oak St, Someplace Town', '2022-06-01'),
+(107, 'William Anderson', '159 Elm Rd, Anywhere Else', '2022-07-15'),
+(108, 'Sophia Martinez', '753 Pine St, Somewhere Town', '2022-08-05'),
+(109, 'Jacob Hernandez', '951 Maple Ave, Anyplace City', '2022-09-01'),
+(110, 'Isabella Rodriguez', '357 Oak Blvd, Elsewhere City', '2022-10-20');
+
+SELECT * FROM CUSTOMER;
+
+create table Books(
+ISBN int primary key,
+Book_title varchar(50),
+category varchar(30),
+Rental_price int,
+status bool,
+Author varchar(30),
+publisher varchar(30)
+);
+
+INSERT INTO BOOKS VALUES
+(1001, 'To Kill a Mockingbird', 'Fiction', 5, true, 'Harper Lee', 'Lippincott'),
+(1002, 'The Great Gatsby', 'Fiction', 6, true, 'F. Scott Fitzgerald', 'Scribner'),
+(1003, '1984', 'Science Fiction', 7, true, 'George Orwell', 'Secker & Warburg'),
+(1004, 'Pride and Prejudice', 'Fiction', 5, true, 'Jane Austen', 'T. Egerton'),
+(1005, 'The Catcher in the Rye', 'Fiction', 6, true, 'J.D. Salinger', 'Little, Brown and Company'),
+(1006, 'The Lord of the Rings', 'Fantasy', 8, true, 'J.R.R. Tolkien', 'Allen & Unwin'),
+(1007, 'Harry Potter and the Sorcerer''s Stone', 'Fantasy', 7, true, 'J.K. Rowling', 'Bloomsbury'),
+(1008, 'To Kill a Mockingbird', 'Fiction', 5, true, 'Harper Lee', 'Lippincott'),
+(1009, 'The Great Gatsby', 'Fiction', 6, true, 'F. Scott Fitzgerald', 'Scribner'),
+(1010, '1984', 'Science Fiction', 7, true, 'George Orwell', 'Secker & Warburg');
+
+SELECT * FROM BOOKS;
+
+Create table IssueStatus(
+Issue_Id int primary key,
+Issued_cust int,
+Issued_book_name varchar(30),
+Issue_date date,
+Isbn_book int,
+foreign key(issued_cust) references customer(customer_Id) on delete cascade,
+foreign key(isbn_book) references Books(ISBN) on delete cascade
+);
+ALTER TABLE ISSUESTATUS change COLUMN ISSUED_BOOK_NAME ISSUED_BOOK_NAME VARCHAR(60);
+INSERT INTO ISSUESTATUS VALUES
+(1001, 101, 'To Kill a Mockingbird', '2023-04-01', 1001),
+(1002, 102, 'The Great Gatsby', '2023-04-05', 1002),
+(1003, 103, '1984', '2023-04-10', 1003),
+(1004, 104, 'Pride and Prejudice', '2023-04-15', 1004),
+(1005, 105, 'The Catcher in the Rye', '2023-04-20', 1005),
+(1006, 106, 'The Lord of the Rings', '2023-04-25', 1006),
+(1007, 107, 'Harry Potter and the Sorcerer''s Stone', '2023-05-01', 1007),
+(1008, 108, 'To Kill a Mockingbird', '2023-05-05', 1008),
+(1009, 109, 'The Great Gatsby', '2023-05-10', 1009),
+(1010, 110, '1984', '2023-05-15', 1010);
+
+SELECT * FROM ISSUESTATUS;
+
+create table ReturnStatus(
+Return_Id int primary key,
+Return_cust varchar(30),
+Return_book_name varchar(30),
+Return_Date date,
+Isbn_book2 int,
+foreign key(Isbn_book2) references Books(ISBN) on delete cascade
+);
+ALTER TABLE RETURNSTATUS CHANGE COLUMN Return_book_name Return_book_name varchar(60);
+
+INSERT INTO RETURNSTATUS VALUES
+(1001, 'Alice Johnson', 'To Kill a Mockingbird', '2023-04-08', 1001),
+(1002, 'Bob Smith', 'The Great Gatsby', '2023-04-12', 1002),
+(1003, 'Charlie Davis', '1984', '2023-04-17', 1003),
+(1004, 'Diana Wilson', 'Pride and Prejudice', '2023-04-22', 1004),
+(1005, 'Ethan Lee', 'The Catcher in the Rye', '2023-04-27', 1005),
+(1006, 'Olivia Thompson', 'The Lord of the Rings', '2023-05-02', 1006),
+(1007, 'William Anderson', 'Harry Potter and the Sorcerer''s Stone', '2023-05-08', 1007),
+(1008, 'Sophia Martinez', 'To Kill a Mockingbird', '2023-05-12', 1008),
+(1009, 'Jacob Hernandez', 'The Great Gatsby', '2023-05-17', 1009),
+(1010, 'Isabella Rodriguez', '1984', '2023-05-22', 1010);
+
+SELECT * FROM RETURNSTATUS;
+
+
+
+#1. Retrieve the book title, category, and rental price of all available BOOKS
+
+SELECT BOOK_title,category,rental_price from Books;
+
+#2 List the employee names and their respective salaries in descending order of salary.
+
+select emp_name,salary from employee order by salary desc;
+
+#3 Retrieve the book titles and the corresponding customers who have issued those books
+
+select issued_cust,issued_book_name from issuestatus;
+
+#4  Display the total count of books in each category
+
+select category,count(isbn) from books group by category;
+
+#5 Retrieve the employee names and their positions for the employees whose salaries are above Rs.50,000
+
+select Emp_name,position from employee where salary>50000;
+
+#6. List the customer names who registered before 2022-01-01 and have not issued any books yet
+
+select customer_name from customer where Reg_date<"2022-01-01" and customer_id not in (select issued_cust from issuestatus);
+
+#7 Display the branch numbers and the total count of employees in each branch
+
+select b.branch_no,count(e.emp_id) as total_employees from branch b left join 
+employee e on b.branch_no=e.branch_no group by b.branch_no;
+
+#8 Display the names of customers who have issued books in the month of June 2023.
+
+select customer_name from customer where month(Reg_date)=6;
+
+#9  Retrieve book_title from book table containing history. 
+
+select book_title from books where book_title like "%history%" ;
+
+#10 Retrieve the branch numbers along with the count of employees for branches having more than 5 employees.
+
+SELECT Branch_no, COUNT(Emp_Id) AS Employee_Count FROM Employee GROUP BY Branch_no HAVING COUNT(Emp_Id) >5;
